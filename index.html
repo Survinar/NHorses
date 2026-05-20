@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ANTIGRAVITY // Cosmic Steed</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- 3D Canvas -->
+      <canvas id="game-canvas"></canvas>
+
+      <!-- Loading Screen Overlay -->
+      <div id="loading-overlay" class="overlay">
+        <div class="loader-container">
+          <div class="loader-logo">Antigravity</div>
+          <div class="loader-bar-bg">
+            <div id="loader-progress" class="loader-bar-fill"></div>
+          </div>
+          <div class="loader-text">Sculpting Sand Dunes...</div>
+        </div>
+      </div>
+
+      <!-- Start Menu Overlay -->
+      <div id="start-overlay" class="overlay hidden">
+        <div class="menu-panel glass-panel">
+          <div>
+            <h1 class="game-title">Antigravity</h1>
+            <p class="game-subtitle">Cosmic Steed Desert Voyage</p>
+          </div>
+          
+          <p class="game-subtitle" style="font-size: 0.9rem; color: rgba(255,255,255,0.75);">
+            Ride a majestic cosmic steed through an endless desert of floating rock formations and low-gravity sands. Collect glowing energy orbs to fuel your antigravity jumps and soar into the sky.
+          </p>
+
+          <div class="controls-guide">
+            <div class="control-item">
+              <span class="control-key">W</span>
+              <span class="control-key">S</span>
+              <span class="control-desc">Accelerate / Brake</span>
+            </div>
+            <div class="control-item">
+              <span class="control-key">A</span>
+              <span class="control-key">D</span>
+              <span class="control-desc">Turn Left / Right</span>
+            </div>
+            <div class="control-item" style="grid-column: span 2;">
+              <span class="control-key" style="min-width: 80px;">Spacebar</span>
+              <span class="control-desc">Antigravity Leap (Launch & Float)</span>
+            </div>
+            <div class="control-item" style="grid-column: span 2;">
+              <span class="control-key" style="min-width: 80px;">Shift</span>
+              <span class="control-desc">Gallop (Speed Boost / Fast Drain)</span>
+            </div>
+          </div>
+
+          <button id="start-btn" class="btn-primary">Launch Steed</button>
+        </div>
+      </div>
+
+      <!-- Play HUD Overlay -->
+      <div id="hud-overlay" class="hidden">
+        <!-- Top Left: Orb Count -->
+        <div class="hud-top-left">
+          <div class="hud-card glass-panel">
+            <div class="hud-orb-icon"></div>
+            <div>
+              <div class="hud-label">Orbs Synthesized</div>
+              <div id="orb-count" class="hud-value">00</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Right: Audio & Pause Toggles -->
+        <div class="hud-top-right">
+          <button id="mute-btn" class="btn-round" title="Toggle Sound">
+            <!-- Speaker Icon -->
+            <svg id="speaker-icon" viewBox="0 0 24 24">
+              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            </svg>
+          </button>
+          <button id="pause-btn" class="btn-round" title="Pause Game">
+            <!-- Pause Icon -->
+            <svg viewBox="0 0 24 24">
+              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Bottom Left: Telemetry (Speed, Altitude) -->
+        <div class="hud-telemetry">
+          <div class="telemetry-row">
+            <span>VELOCITY:</span>
+            <span id="telemetry-speed" class="telemetry-val">0.0 km/h</span>
+          </div>
+          <div class="telemetry-row alt">
+            <span>ALTITUDE:</span>
+            <span id="telemetry-alt" class="telemetry-val">0.0 m</span>
+          </div>
+        </div>
+
+        <!-- Bottom Center: Antigravity Boost Bar -->
+        <div class="hud-bottom-center">
+          <div class="boost-panel glass-panel">
+            <div class="boost-header">
+              <span class="boost-title">Antigravity Thruster</span>
+              <span id="boost-status" class="boost-text">READY</span>
+            </div>
+            <div class="boost-bar-bg">
+              <div id="boost-charge" class="boost-bar-fill"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Right: Quick Tips / Dynamic Info -->
+        <div class="hud-tips glass-panel">
+          <div class="tips-title">Pilot System</div>
+          <div id="dynamic-tip">Collect glowing orbs in the desert and on floating islands to maintain antigravity charge. Press <span class="keyboard-hint">Space</span> to launch!</div>
+        </div>
+      </div>
+
+      <!-- Pause Menu Overlay -->
+      <div id="pause-overlay" class="overlay hidden">
+        <div class="menu-panel glass-panel">
+          <div>
+            <h1 class="game-title" style="font-size: 3rem;">Voyage Paused</h1>
+            <p class="game-subtitle">Steed systems in stasis</p>
+          </div>
+
+          <button id="resume-btn" class="btn-primary" style="background: linear-gradient(135deg, var(--cosmic-blue) 0%, var(--secondary-glow) 100%); box-shadow: 0 4px 20px rgba(6, 182, 212, 0.4);">Resume Journey</button>
+          <button id="restart-pause-btn" class="btn-primary" style="opacity: 0.8;">Restart Voyage</button>
+        </div>
+      </div>
+
+      <!-- Game Over / Victory Overlay -->
+      <div id="gameover-overlay" class="overlay hidden">
+        <div class="menu-panel glass-panel">
+          <div>
+            <h1 id="gameover-title" class="game-title" style="font-size: 3rem;">Core Drained</h1>
+            <p id="gameover-subtitle" class="game-subtitle">Antigravity thruster power exhausted</p>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div id="final-orbs" class="stat-val">0</div>
+              <div class="stat-label">Orbs Secured</div>
+            </div>
+            <div class="stat-box">
+              <div id="high-score" class="stat-val">0</div>
+              <div class="stat-label">Personal Record</div>
+            </div>
+          </div>
+
+          <button id="restart-btn" class="btn-primary">Initiate Re-Launch</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
