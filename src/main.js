@@ -83,14 +83,15 @@ class GameApp {
       2000
     );
 
-    // 3. Renderer
-    this.renderer = new THREE.WebGLRenderer({
-      canvas: this.canvas,
-      antialias: true,
-      powerPreference: "high-performance"
-    });
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+     // 3. Renderer
+     this.renderer = new THREE.WebGLRenderer({
+       canvas: this.canvas,
+       antialias: true,
+       powerPreference: "high-performance",
+       precision: "mediump"
+     });
+     this.renderer.setSize(window.innerWidth, window.innerHeight);
+     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.35));
     
     // Shadow maps
     this.renderer.shadowMap.enabled = true;

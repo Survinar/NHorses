@@ -11,6 +11,7 @@ export class Horse {
     // Particle pool for hoof trails
     this.hoofSparkles = [];
     this.maxSparkles = 150;
+    this.sparkleIndex = 0;
     
     // Animation state variables
     this.velocity = new THREE.Vector3();
@@ -254,9 +255,9 @@ export class Horse {
 
   spawnHoofSparkle(originPos, count = 1) {
     for (let c = 0; c < count; c++) {
-      // Find inactive particle
-      const sparkle = this.hoofSparkles.find(p => p.life <= 0);
-      if (!sparkle) return;
+      // Recycle particle using ring buffer index
+      const sparkle = this.hoofSparkles[this.sparkleIndex];
+      this.sparkleIndex = (this.sparkleIndex + 1) % this.maxSparkles;
 
       sparkle.mesh.position.copy(originPos);
       sparkle.mesh.visible = true;

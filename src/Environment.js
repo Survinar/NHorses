@@ -55,7 +55,7 @@ export class Environment {
     this.oasisRadius = 35;
     
     this.particles = null;
-    this.particleCount = 600;
+    this.particleCount = 300;
     
     this.init();
   }
@@ -167,11 +167,11 @@ export class Environment {
     sunLight.castShadow = true;
     
     // Shadow quality configuration
-    sunLight.shadow.mapSize.width = 2048;
-    sunLight.shadow.mapSize.height = 2048;
+    sunLight.shadow.mapSize.width = 1024;
+    sunLight.shadow.mapSize.height = 1024;
     sunLight.shadow.camera.near = 100;
-    sunLight.shadow.camera.far = 1200;
-    const d = 250;
+    sunLight.shadow.camera.far = 1000;
+    const d = 120;
     sunLight.shadow.camera.left = -d;
     sunLight.shadow.camera.right = d;
     sunLight.shadow.camera.top = d;
